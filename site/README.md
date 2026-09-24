@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Spray Tan By Jenna — website
 
-## Getting Started
+Next.js 16 (App Router), TypeScript, Tailwind CSS 4. Every page is statically generated.
 
-First, run the development server:
+## Scripts
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev        # http://localhost:3000
+npm run build
+npm run start
+npm run lint
+npx tsc --noEmit
+npm run test:e2e   # see "Tests" below
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where things live
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| What | Where |
+|---|---|
+| Business details: name, booking URL, address, phone, email, hours, socials, nav | `config/site.ts` |
+| Services, FAQ, portfolio data | `content/*.ts` |
+| Pages | `app/<route>/page.tsx` |
+| Shared UI (buttons, sections, placeholders) | `components/ui/` |
+| Header, footer, mobile nav, sticky Book Now bar | `components/layout/` |
+| Page sections | `components/sections/` |
+| Metadata and structured data | `lib/metadata.ts`, `lib/schema.ts` |
+| Brand colours and font tokens | `app/globals.css` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Rules:
+- **Book Now:** always render `BookNowButton`. It's the only component that links to GlossGenius, so the URL lives in one place.
+- **Missing content:** use `Placeholder` / `ImageFrame` (without `src`). Never write stand-in copy. The full list of what's still missing is in `../CONTENT-CHECKLIST.md`.
 
-## Learn More
+## Environment
 
-To learn more about Next.js, take a look at the following resources:
+`NEXT_PUBLIC_SITE_URL`: the production origin, e.g. `https://example.com`. It is **required for production**. Canonical URLs, Open Graph, the sitemap, robots and JSON-LD fall back to `http://localhost:3000` without it.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tests
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Playwright + axe tests in `e2e/` cover:
+- no horizontal scroll at 375/768/1024/1440
+- no console errors
+- WCAG 2.1 AA (axe)
+- one `h1` per page
+- Book Now links
+- internal links
+- the mobile menu
+- SEO tags
 
-## Deploy on Vercel
+They run against the production build:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+npx next start -p 3100     # leave running in a second terminal
+npm run test:e2e
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Start the server yourself as shown. If Playwright starts it, the runner hangs for minutes on exit on Windows. First-time setup: `npx playwright install chromium`.
