@@ -1,8 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
-import { navLinks, siteConfig } from "../config/site";
+import { navLinks, secondaryLinks, siteConfig } from "../config/site";
 
-const routes = navLinks.map((link) => link.href);
+const routes = [...navLinks, ...secondaryLinks].map((link) => link.href);
 const viewports = [375, 768, 1024, 1440].map((width) => ({
   width,
   height: 900,
@@ -128,6 +128,39 @@ test.describe("mobile menu", () => {
     await expect(page).toHaveURL(/\/services$/);
     await expect(page.getByRole("navigation", { name: "Mobile" })).toBeHidden();
   });
+});
+
+test.describe("paid video", () => {
+  // The suite runs without Stripe/Cloudflare/Resend keys.
+  test("without configuration, /video shows no player", async ({ page }) => {
+    await page.goto("/video");
+    await expect(page.getByText(/isn.t set up yet/)).toBeVisible();
+    await expect(page.locator("iframe")).toHaveCount(0);
+  });
+
+  test("unlock endpoint never grants access without a valid purchase", async ({
+    page,
+    context,
+  }) => {
+    for (const query of ["?session_id=cs_test_fake", "?t=forged.token", ""]) {
+      await page.goto(`/video/unlock${query}`);
+      await expect(page).toHaveURL(/\/video(\?.*)?$/);
+    }
+    const cookies = await context.cookies();
+    expect(cookies.find((c) => c.name === "video_access")).toBeUndefined();
+    await expect(page.locator("iframe")).toHaveCount(0);
+  });
+
+  test("webhook rejects unsigned requests", async ({ request }) => {
+    const response = await request.post("/api/stripe/webhook", { data: "{}" });
+    expect(response.status()).toBeGreaterThanOrEqual(400);
+  });
+});
+
+test("robots.txt keeps private endpoints out of search", async ({ request }) => {
+  const body = await (await request.get("/robots.txt")).text();
+  expect(body).toContain("Disallow: /api/");
+  expect(body).toContain("Disallow: /video/unlock");
 });
 
 test("SEO basics on every page", async ({ page }) => {

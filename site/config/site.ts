@@ -29,6 +29,8 @@ export type SiteConfig = {
   email: string | null;
   hours: string | null;
   socials: SocialLink[];
+  /** Public Google reviews page for the business. */
+  googleReviewsUrl: string | null;
 };
 
 export const siteConfig: SiteConfig = {
@@ -51,6 +53,7 @@ export const siteConfig: SiteConfig = {
   email: null, // MISSING
   hours: null, // MISSING
   socials: [], // MISSING: platform handles/URLs
+  googleReviewsUrl: null, // MISSING: Google Business Profile reviews link
 };
 
 export const navLinks = [
@@ -61,6 +64,13 @@ export const navLinks = [
   { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
   { label: "Training", href: "/training" },
+] as const;
+
+/** Footer-only links; kept out of the main nav, which is full at 1024px. */
+export const secondaryLinks = [
+  { label: "Video", href: "/video" },
+  { label: "Terms", href: "/terms" },
+  { label: "Privacy", href: "/privacy" },
 ] as const;
 
 export function formatAddress({ street, city, region, postalCode }: Address) {

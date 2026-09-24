@@ -18,7 +18,8 @@ npm run test:e2e   # see "Tests" below
 | What | Where |
 |---|---|
 | Business details: name, booking URL, address, phone, email, hours, socials, nav | `config/site.ts` |
-| Services, FAQ, portfolio data | `content/*.ts` |
+| Services, FAQ, portfolio, reviews, video text | `content/*.ts` |
+| Paid video (Stripe, Cloudflare Stream, Resend) | `lib/`, `app/video/`, `app/api/stripe/webhook/` |
 | Pages | `app/<route>/page.tsx` |
 | Shared UI (buttons, sections, placeholders) | `components/ui/` |
 | Header, footer, mobile nav, sticky Book Now bar | `components/layout/` |
@@ -32,7 +33,29 @@ Rules:
 
 ## Environment
 
-`NEXT_PUBLIC_SITE_URL`: the production origin, e.g. `https://example.com`. It is **required for production**. Canonical URLs, Open Graph, the sitemap, robots and JSON-LD fall back to `http://localhost:3000` without it.
+All variables are documented in `.env.example`. Copy it to `.env.local` for development.
+
+- `NEXT_PUBLIC_SITE_URL`: the production origin, e.g. `https://example.com`. It is **required for production**. Canonical URLs, Open Graph, the sitemap, robots, JSON-LD, Stripe redirects and emailed links fall back to `http://localhost:3000` without it.
+- **Paid video variables:** until *all* of them are set, `/video` shows a "not set up yet" notice. The build and tests need none of them.
+
+## Paid video
+
+How it works:
+- There is no database; Stripe is the record of who paid.
+- **Buy:** "Buy access" opens Stripe Checkout. Stripe then redirects to `/video/unlock?session_id=…`, which confirms the payment with Stripe and sets a signed, httpOnly `video_access` cookie.
+- **Email:** the webhook (`checkout.session.completed`) emails the buyer a personal link, `/video/unlock?t=<signed token>`. It restores access on any device. "Email my link" re-sends it to past buyers.
+- **Refunds:** every view of `/video` re-checks the purchase with Stripe, so a full refund removes access.
+- **Playback:** the player uses a Cloudflare Stream URL signed locally, which expires after 4 hours. The video itself must have `requireSignedURLs` enabled.
+- **Limits:** a buyer's link can be shared, since there are no accounts, and screen recording can't be prevented.
+
+Test locally in Stripe test mode:
+
+```bash
+stripe listen --forward-to localhost:3000/api/stripe/webhook   # prints STRIPE_WEBHOOK_SECRET
+npm run dev
+```
+
+Pay with card `4242 4242 4242 4242`, any future date and any CVC. In test mode, Resend only delivers to your own Resend account email.
 
 ## Tests
 

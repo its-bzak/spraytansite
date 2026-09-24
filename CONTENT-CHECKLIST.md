@@ -40,7 +40,24 @@ Paths in the "Goes in" column are relative to `site/`.
 **About** (`app/about/page.tsx`)
 - [ ] Jenna's bio or story
 - [ ] Any certifications, training or years of experience (only published if Jenna confirms them)
-- [ ] Testimonials or reviews, only with each client's permission (otherwise the site won't have a reviews section)
+
+**Reviews** (`content/reviews.ts`, shown on Home and About)
+- [ ] The reviews Jenna wants shown, copied word for word from Google or GlossGenius
+- [ ] Each reviewer's permission, and how they'd like to be credited (e.g. "Sarah M.")
+- [ ] Her Google reviews link, for "Read all reviews on Google" (`config/site.ts` → `googleReviewsUrl`)
+- If there are no reviews yet, the section is removed from both pages instead.
+
+**Paid video** (`content/video.ts`, page at `/video`)
+- [ ] The video file (uploaded to Cloudflare Stream, not to the site)
+- [ ] Title and description
+- [ ] What it is. Is it part of the training program? This decides where it's linked from. For now it's only in the footer.
+- [ ] Price (set in Stripe, which the site reads, so it can be changed without a code change)
+- [ ] Refund policy for video purchases
+
+**Legal** (`app/terms/page.tsx`, `app/privacy/page.tsx`). Needed now that the site takes payments:
+- [ ] Terms of sale and use. Her GlossGenius site has a Terms page that may be reusable.
+- [ ] Privacy policy covering Stripe payments, the purchase email and the access cookie. Her GlossGenius site has one that may be reusable.
+- [ ] Sales tax on digital goods: a question for her accountant. Stripe Tax can collect it if needed.
 
 **Training** (`app/training/page.tsx`)
 - [ ] Program name and what it covers
@@ -62,8 +79,14 @@ Paths in the "Goes in" column are relative to `site/`.
 ## 3. Launch blockers (developer)
 
 - [ ] **Domain.** Set `NEXT_PUBLIC_SITE_URL=https://<domain>` in the hosting environment. Without it, canonical links, social previews, the sitemap and search data all point to `http://localhost:3000`.
-- [ ] Hosting decided and set up.
-- [ ] Analytics and privacy policy: needed or not?
-- [ ] Does Jenna have a Google Business Profile? If so, add it to `socials`, and make sure its name, address and phone match the site.
+- [ ] Hosting decided and set up. It must run Node server code (e.g. Vercel), not static files only, because of the paid video.
+- [ ] **Paid video accounts** (all env vars are listed in `site/.env.example`):
+  - [ ] Stripe account in Jenna's name, business verified. Create the video Product and a one-time Price.
+  - [ ] Stripe webhook: `https://<domain>/api/stripe/webhook`, event `checkout.session.completed`
+  - [ ] Cloudflare account with Stream. Upload the video, set `requireSignedURLs: true`, create a signing key.
+  - [ ] Resend account, with the sending domain verified by DNS (needs the domain)
+  - [ ] Test the full purchase in Stripe test mode on the live domain before switching to live keys
+- [ ] Analytics: needed or not?
+- [ ] Does Jenna have a Google Business Profile? If so, add it to `socials` and `googleReviewsUrl`, and make sure its name, address and phone match the site.
 - [ ] Final sweep. This must return nothing but the component definitions:
       `grep -rn "PLACEHOLDER\|NEEDS_CONFIRMATION\|MISSING\|<Placeholder\|neededLabel" site/app site/components site/config site/content`

@@ -4,6 +4,7 @@ import { CtaBanner } from "@/components/sections/CtaBanner";
 import { Hero } from "@/components/sections/Hero";
 import { LinkCards } from "@/components/sections/LinkCards";
 import { LocationSection } from "@/components/sections/LocationSection";
+import { Reviews } from "@/components/sections/Reviews";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { ButtonLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
@@ -44,6 +45,7 @@ export default function HomePage() {
 
       <LocationSection />
       <LinkCards />
+      <Reviews tone="soft" />
       <CtaBanner />
     </>
   );

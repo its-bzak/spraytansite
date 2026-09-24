@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { formatAddress, navLinks, siteConfig } from "@/config/site";
+import {
+  formatAddress,
+  navLinks,
+  secondaryLinks,
+  siteConfig,
+} from "@/config/site";
 import { BookNowButton } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Placeholder } from "@/components/ui/Placeholder";
@@ -77,10 +82,21 @@ export function Footer() {
           </div>
         </div>
 
-        <p className="mt-14 border-t border-white/15 pt-6 text-sm text-zinc-400">
-          &copy; {new Date().getFullYear()} {name}. All rights reserved.
-          Site designed and built by Barczak Development
-        </p>
+        <div className="mt-14 flex flex-col gap-4 border-t border-white/15 pt-6 text-sm text-zinc-400 md:flex-row md:items-center md:justify-between">
+          <p>
+            &copy; {new Date().getFullYear()} {name}. All rights reserved.
+            Site designed and built by Barczak Development
+          </p>
+          <ul className="flex flex-wrap gap-x-6">
+            {secondaryLinks.map(({ label, href }) => (
+              <li key={href}>
+                <Link href={href} className="inline-block py-2 hover:text-paper">
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Container>
     </footer>
   );

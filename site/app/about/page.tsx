@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/metadata";
 import { CtaBanner } from "@/components/sections/CtaBanner";
 import { PageHero } from "@/components/sections/PageHero";
+import { Reviews } from "@/components/sections/Reviews";
 import { ButtonLink } from "@/components/ui/Button";
 import { ImageFrame } from "@/components/ui/ImageFrame";
 import { Placeholder } from "@/components/ui/Placeholder";
@@ -55,6 +56,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
+      <Reviews tone="soft" />
       <CtaBanner />
     </>
   );
