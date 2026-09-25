@@ -17,7 +17,7 @@ export function Reviews({ tone = "default" }: { tone?: "default" | "soft" }) {
           <p>
             Real reviews chosen by Jenna are needed, from Google or GlossGenius,
             each with the reviewer&apos;s permission and how they&apos;d like
-            to be credited. If there are none yet, remove this section.
+            to be credited.
           </p>
         </Placeholder>
       ) : (
