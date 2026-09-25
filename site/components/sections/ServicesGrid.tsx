@@ -1,3 +1,4 @@
+import { serviceBookingUrl } from "@/config/site";
 import { services, type Service } from "@/content/services";
 import { BookNowButton } from "@/components/ui/Button";
 import { Placeholder } from "@/components/ui/Placeholder";
@@ -32,7 +33,15 @@ export function ServicesGrid() {
               )}
             </div>
             <div className="mt-6">
-              <BookNowButton size="sm" variant="secondary">
+              <BookNowButton
+                size="sm"
+                variant="secondary"
+                href={
+                  service.bookingToken
+                    ? serviceBookingUrl(service.bookingToken)
+                    : undefined
+                }
+              >
                 Book Now
                 <span className="sr-only"> for {service.name}</span>
               </BookNowButton>

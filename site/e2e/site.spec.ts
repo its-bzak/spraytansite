@@ -1,6 +1,12 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
-import { navLinks, secondaryLinks, siteConfig } from "../config/site";
+import {
+  navLinks,
+  secondaryLinks,
+  serviceBookingUrl,
+  siteConfig,
+} from "../config/site";
+import { services } from "../content/services";
 
 const routes = [...navLinks, ...secondaryLinks].map((link) => link.href);
 const viewports = [375, 768, 1024, 1440].map((width) => ({
@@ -49,7 +55,14 @@ for (const viewport of viewports) {
   });
 }
 
-test("every Book Now link points to the booking URL in a new tab", async ({
+const bookingHrefs = [
+  siteConfig.bookingUrl,
+  ...services.flatMap((s) =>
+    s.bookingToken ? [serviceBookingUrl(s.bookingToken)] : [],
+  ),
+];
+
+test("every Book Now link points to a booking URL in a new tab", async ({
   page,
 }) => {
   for (const route of routes) {
@@ -59,10 +72,27 @@ test("every Book Now link points to the booking URL in a new tab", async ({
     expect(count, `${route} has a Book Now link`).toBeGreaterThan(0);
     for (let i = 0; i < count; i++) {
       const link = links.nth(i);
-      await expect(link).toHaveAttribute("href", siteConfig.bookingUrl);
+      expect(bookingHrefs, route).toContain(await link.getAttribute("href"));
       await expect(link).toHaveAttribute("target", "_blank");
       await expect(link).toHaveAttribute("rel", /noopener/);
     }
+  }
+});
+
+test("service cards open GlossGenius with their service selected", async ({
+  page,
+}) => {
+  await page.goto("/services");
+  for (const service of services) {
+    const link = page.getByRole("link", {
+      name: new RegExp(`book now for ${service.name}`, "i"),
+    });
+    await expect(link).toHaveAttribute(
+      "href",
+      service.bookingToken
+        ? serviceBookingUrl(service.bookingToken)
+        : siteConfig.bookingUrl,
+    );
   }
 });
 

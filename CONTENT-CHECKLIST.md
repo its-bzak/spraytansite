@@ -28,7 +28,8 @@ Paths in the "Goes in" column are relative to `site/`.
 **Services** (`content/services.ts`, `app/services/page.tsx`)
 - [ ] What the Prep And Post Spray Hydration add-on includes
 - [ ] "What to expect" during an appointment
-- [ ] Does GlossGenius have a direct booking link for each service? If so, each service card can link straight to it.
+- [x] Direct booking link for each service. The Studio and Mobile cards open GlossGenius with that service already selected, so clients go straight to "Book" and then the calendar. If Jenna deletes and re-creates a service in GlossGenius, its link falls back to the full list until the new token is copied into `content/services.ts`. Run `npm run check:booking` (from `site/`) after any change to her GlossGenius menu: it flags stale links and any name, price or duration that no longer matches.
+- [ ] Should the Prep And Post Spray Hydration add-on be bookable on its own, or only with a tan? For now its card opens the full service list so clients pick a tan alongside it.
 
 **FAQ answers** (`content/faq.ts`). These are Jenna's policies, so they haven't been drafted:
 - [ ] How to prepare before an appointment
@@ -89,5 +90,6 @@ Paths in the "Goes in" column are relative to `site/`.
   - [ ] Test the full purchase in Stripe test mode on the live domain before switching to live keys
 - [ ] Analytics: needed or not?
 - [ ] Does Jenna have a Google Business Profile? If so, add it to `socials` and `googleReviewsUrl`, and make sure its name, address and phone match the site.
+- [ ] `npm run check:booking` passes: site services, prices and booking links match GlossGenius
 - [ ] Final sweep. This must return nothing but the component definitions:
       `grep -rn "PLACEHOLDER\|NEEDS_CONFIRMATION\|MISSING\|<Placeholder\|neededLabel" site/app site/components site/config site/content`

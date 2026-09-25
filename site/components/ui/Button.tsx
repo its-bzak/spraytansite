@@ -57,18 +57,20 @@ export function ButtonLink({
 
 /**
  * The only component that links to the booking provider. Every "Book Now"
- * on the site renders through here so the URL lives in one place
- * (siteConfig.bookingUrl).
+ * on the site renders through here. `href` defaults to the full service list
+ * (siteConfig.bookingUrl); service cards pass serviceBookingUrl() instead so
+ * GlossGenius opens with that service already selected.
  */
 export function BookNowButton({
+  href = siteConfig.bookingUrl,
   variant = "primary",
   size = "md",
   className,
   children = "Book Now",
-}: Partial<ButtonProps>) {
+}: Partial<ButtonProps> & { href?: string }) {
   return (
     <a
-      href={siteConfig.bookingUrl}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       className={buttonStyles(variant, size, className)}

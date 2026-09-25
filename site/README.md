@@ -11,6 +11,7 @@ npm run start
 npm run lint
 npx tsc --noEmit
 npm run test:e2e   # see "Tests" below
+npm run check:booking  # compare content/services.ts with the live GlossGenius menu
 ```
 
 ## Where things live
@@ -28,7 +29,8 @@ npm run test:e2e   # see "Tests" below
 | Brand colours and font tokens | `app/globals.css` |
 
 Rules:
-- **Book Now:** always render `BookNowButton`. It's the only component that links to GlossGenius, so the URL lives in one place.
+- **Book Now:** always render `BookNowButton`. It's the only component that links to GlossGenius, so the URL lives in one place. By default it opens the full service list. Service cards pass `href={serviceBookingUrl(token)}`, which opens GlossGenius with that service already selected. The token is each service's `bookingToken` in `content/services.ts`.
+- **GlossGenius drift:** `npm run check:booking` fetches her live GlossGenius menu and fails if a booking token is stale or a name, price or duration differs from `content/services.ts`. It needs network access, so it isn't part of the e2e suite. Run it before deploying and after she edits her menu.
 - **Missing content:** use `Placeholder` / `ImageFrame` (without `src`). Never write stand-in copy. The full list of what's still missing is in `../CONTENT-CHECKLIST.md`.
 
 ## Environment
