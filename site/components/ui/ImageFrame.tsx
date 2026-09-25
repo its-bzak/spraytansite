@@ -1,5 +1,22 @@
 import Image from "next/image";
 
+type ImageFrameProps = {
+  alt: string;
+  aspect?: string;
+  /** object-position class that controls the crop, e.g. "object-top". */
+  position?: string;
+  preload?: boolean;
+  sizes?: string;
+  className?: string;
+} & (
+  | { src: string; neededLabel?: never }
+  | {
+      src?: undefined;
+      /** Describes the photo the client needs to provide. */
+      neededLabel: string;
+    }
+);
+
 /**
  * Photo slot. `alt` is required so accessible text is enforced at compile
  * time. With no `src`, a clearly marked placeholder is shown instead.
@@ -9,19 +26,11 @@ export function ImageFrame({
   alt,
   neededLabel,
   aspect = "aspect-[4/5]",
-  priority = false,
+  position = "object-center",
+  preload = false,
   sizes = "(min-width: 1024px) 40vw, 100vw",
   className = "",
-}: {
-  src?: string;
-  alt: string;
-  /** Describes the photo the client needs to provide. */
-  neededLabel: string;
-  aspect?: string;
-  priority?: boolean;
-  sizes?: string;
-  className?: string;
-}) {
+}: ImageFrameProps) {
   const shape = `relative w-full overflow-hidden rounded-3xl ${aspect} ${className}`;
 
   if (!src) {
@@ -45,8 +54,8 @@ export function ImageFrame({
         alt={alt}
         fill
         sizes={sizes}
-        priority={priority}
-        className="object-cover"
+        preload={preload}
+        className={`object-cover ${position}`}
       />
     </div>
   );

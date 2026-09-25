@@ -4,9 +4,28 @@ import { CtaBanner } from "@/components/sections/CtaBanner";
 import { PageHero } from "@/components/sections/PageHero";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { ButtonLink } from "@/components/ui/Button";
+import { PhotoRow, type Photo } from "@/components/ui/PhotoRow";
 import { Placeholder } from "@/components/ui/Placeholder";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+
+const photos: Photo[] = [
+  {
+    src: "/airbrush-spray-tan-application-model-zebra-swimsuit.jpeg",
+    alt: "Airbrush spray gun being used on a model in a zebra-print swimsuit",
+    caption: "Airbrush application",
+  },
+  {
+    src: "/mobile-spray-tanning-tent-setup-bedroom-norvell.jpeg",
+    alt: "Pop-up spray tan tent with foot pads and a Norvell equipment case set up in a bedroom",
+    caption: "Mobile appointment setup",
+  },
+  {
+    src: "/professional-spray-tan-solution-aftercare-equipment.jpeg",
+    alt: "Tanning solution bottles, a spray gun, a brush and an aftercare card on a counter",
+    caption: "Solutions, tools and aftercare card",
+  },
+];
 
 export const metadata: Metadata = buildMetadata({
   title: "Spray Tan Services",
@@ -32,6 +51,9 @@ export default function ServicesPage() {
         />
         <div className="mt-10">
           <ServicesGrid />
+        </div>
+        <div className="mt-12">
+          <PhotoRow photos={photos} />
         </div>
       </Section>
 

@@ -27,10 +27,11 @@ export function Hero() {
         </div>
 
         <ImageFrame
-          alt="Jenna's spray tanning studio"
-          neededLabel="hero photo (Jenna, the studio, or a result photo)"
-          aspect="aspect-[4/3] lg:aspect-[4/5]"
-          priority
+          src="/professional-airbrush-tanning-technician-jenna-crossley.jpeg"
+          alt="Jenna holding an airbrush spray tan gun beside a Norvell equipment case"
+          aspect="aspect-[4/5]"
+          position="object-top"
+          preload
         />
       </Container>
     </div>

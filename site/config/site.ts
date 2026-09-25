@@ -77,6 +77,11 @@ export function formatAddress({ street, city, region, postalCode }: Address) {
   return `${street}, ${city}, ${region} ${postalCode}`;
 }
 
+/** Booking link that opens GlossGenius with one service already selected. */
+export function serviceBookingUrl(token: string) {
+  return `${siteConfig.bookingUrl}?service_token=${encodeURIComponent(token)}`;
+}
+
 export function directionsUrl(address: Address) {
   const query = encodeURIComponent(formatAddress(address));
   return `https://www.google.com/maps/search/?api=1&query=${query}`;

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { portfolioItems } from "@/content/portfolio";
+import { portfolioCategories, portfolioItems } from "@/content/portfolio";
 import { Placeholder } from "@/components/ui/Placeholder";
 
 export function PortfolioGallery() {
@@ -14,27 +14,42 @@ export function PortfolioGallery() {
     );
   }
 
+  const groups = portfolioCategories
+    .map((category) => ({
+      ...category,
+      items: portfolioItems.filter((item) => item.category === category.id),
+    }))
+    .filter((group) => group.items.length > 0);
+
   return (
-    <ul className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-      {portfolioItems.map(({ src, alt, caption, width, height }) => (
-        <li key={src}>
-          <figure>
-            <Image
-              src={src}
-              alt={alt}
-              width={width}
-              height={height}
-              sizes="(min-width: 768px) 33vw, 50vw"
-              className="h-auto w-full rounded-2xl object-cover"
-            />
-            {caption && (
-              <figcaption className="mt-2 text-sm text-muted">
-                {caption}
-              </figcaption>
-            )}
-          </figure>
-        </li>
+    <div className="space-y-16">
+      {groups.map(({ id, title, items }) => (
+        <div key={id}>
+          <h3 className="text-2xl font-semibold tracking-tight">{title}</h3>
+          {/* Masonry via CSS columns, so mixed portrait sizes show uncropped. */}
+          <ul className="mt-6 columns-2 gap-4 md:columns-3 md:gap-6">
+            {items.map(({ src, alt, caption, width, height }) => (
+              <li key={src} className="mb-4 break-inside-avoid md:mb-6">
+                <figure>
+                  <Image
+                    src={src}
+                    alt={alt}
+                    width={width}
+                    height={height}
+                    sizes="(min-width: 768px) 33vw, 50vw"
+                    className="h-auto w-full rounded-2xl"
+                  />
+                  {caption && (
+                    <figcaption className="mt-2 text-sm text-muted">
+                      {caption}
+                    </figcaption>
+                  )}
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }
