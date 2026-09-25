@@ -4,6 +4,7 @@ import { CtaBanner } from "@/components/sections/CtaBanner";
 import { Hero } from "@/components/sections/Hero";
 import { LinkCards } from "@/components/sections/LinkCards";
 import { LocationSection } from "@/components/sections/LocationSection";
+import { PortfolioPreview } from "@/components/sections/PortfolioPreview";
 import { Reviews } from "@/components/sections/Reviews";
 import { ServicesGrid } from "@/components/sections/ServicesGrid";
 import { ButtonLink } from "@/components/ui/Button";
@@ -43,6 +44,7 @@ export default function HomePage() {
         </div>
       </Section>
 
+      <PortfolioPreview />
       <LocationSection />
       <LinkCards />
       <Reviews tone="soft" />

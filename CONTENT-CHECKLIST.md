@@ -67,10 +67,11 @@ Paths in the "Goes in" column are relative to `site/`.
 - [ ] Certification, if any
 - [ ] How people sign up (GlossGenius, email, another platform?)
 
-**Photos** (in `public/`, referenced from the files below)
-- [ ] Hero photo for the home page (`components/sections/Hero.tsx`)
-- [ ] Headshot or portrait of Jenna (`app/about/page.tsx`)
-- [ ] Portfolio photos, plus confirmation that each person pictured agreed to be published (`content/portfolio.ts`)
+**Photos** (in `public/`, referenced from the files below; full-size originals are kept in `client-originals/`, which git ignores)
+- [x] Hero photo for the home page (`components/sections/Hero.tsx`)
+- [x] Headshot or portrait of Jenna (`app/about/page.tsx`)
+- [x] Portfolio photos (`content/portfolio.ts`), plus supporting photos on Services and Training
+- [ ] Confirmation that each person pictured (portfolio, Services and Training photos) agreed to be published
 
 **Brand**
 - [ ] Logo, SVG preferred. Until then the site uses a text wordmark and a temporary "J" favicon (`app/icon.tsx`).

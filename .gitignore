@@ -62,3 +62,5 @@ Thumbs.db
 
 # Misc
 *.pem
+# Client photo originals (full-res, with metadata); site/public holds processed copies
+client-originals/

@@ -49,8 +49,8 @@ export default function AboutPage() {
             </div>
           </div>
           <ImageFrame
-            alt="Portrait of Jenna"
-            neededLabel="headshot or portrait of Jenna"
+            src="/about-portrait.jpeg"
+            alt="Jenna seated on a Norvell equipment case holding two airbrush spray guns"
             aspect="aspect-[4/5]"
           />
         </div>

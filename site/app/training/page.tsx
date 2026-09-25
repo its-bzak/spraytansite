@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/metadata";
 import { PageHero } from "@/components/sections/PageHero";
 import { ButtonLink } from "@/components/ui/Button";
+import { PhotoRow, type Photo } from "@/components/ui/PhotoRow";
 import { Placeholder } from "@/components/ui/Placeholder";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -22,6 +23,21 @@ const detailsNeeded = [
   "Who it is for and any prerequisites",
   "Certification, if any (only if real)",
   "How people enroll",
+];
+
+const photos: Photo[] = [
+  {
+    src: "/certified-spray-tan-technician-training-salon.jpeg",
+    alt: "Jenna and three women in a salon, one holding a certificate of completion",
+  },
+  {
+    src: "/expert-spray-tan-artist-airbrush-gun-setup.jpeg",
+    alt: "Woman holding an airbrush spray gun and hose beside a spray tan tent",
+  },
+  {
+    src: "/custom-airbrush-tanning-application-salon-tent.jpeg",
+    alt: "Woman kneeling to airbrush a client's legs inside a spray tan tent",
+  },
 ];
 
 export default function TrainingPage() {
@@ -48,6 +64,9 @@ export default function TrainingPage() {
               ))}
             </ul>
           </Placeholder>
+        </div>
+        <div className="mt-12">
+          <PhotoRow photos={photos} />
         </div>
       </Section>
     </>
