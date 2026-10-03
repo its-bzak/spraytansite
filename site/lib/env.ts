@@ -3,7 +3,7 @@ import "server-only";
 /**
  * Server-side configuration for the paid video. Every variable is required;
  * if any is missing the feature is treated as not set up yet and /video shows
- * a "not available" state instead of failing. See .env.example.
+ * the at-home kit's coming-soon notice instead of failing. See .env.example.
  */
 export type VideoConfig = {
   stripeSecretKey: string;

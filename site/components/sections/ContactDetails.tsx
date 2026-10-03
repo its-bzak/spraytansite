@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { directionsUrl, formatAddress, siteConfig } from "@/config/site";
-import { Placeholder } from "@/components/ui/Placeholder";
+import { serviceAreaLabel, siteConfig } from "@/config/site";
 import { SocialLinks } from "./SocialLinks";
 
 function Row({ label, children }: { label: string; children: ReactNode }) {
@@ -12,56 +11,35 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
+/** Each detail appears once Jenna has supplied it. */
 export function ContactDetails() {
-  const { address, serviceArea, phone, email, hours, socials } = siteConfig;
+  const { phone, email, hours, socials } = siteConfig;
 
   return (
     <dl className="divide-y divide-ink/15 border-y border-ink/15">
-      <Row label="Studio">
-        <address className="not-italic">{formatAddress(address)}</address>
-        <a
-          href={directionsUrl(address)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-1 inline-block font-semibold underline underline-offset-4"
-        >
-          Get directions
-          <span className="sr-only"> (opens in a new tab)</span>
-        </a>
+      <Row label="Service area">
+        Mobile spray tans in {serviceAreaLabel}. Jenna comes to you.
       </Row>
-      <Row label="Mobile">
-        {serviceArea ?? (
-          <Placeholder inline>towns/areas covered by mobile appointments</Placeholder>
-        )}
-      </Row>
-      <Row label="Phone">
-        {phone ? (
+      {phone && (
+        <Row label="Phone">
           <a href={`tel:${phone}`} className="underline underline-offset-4">
             {phone}
           </a>
-        ) : (
-          <Placeholder inline>phone number</Placeholder>
-        )}
-      </Row>
-      <Row label="Email">
-        {email ? (
+        </Row>
+      )}
+      {email && (
+        <Row label="Email">
           <a href={`mailto:${email}`} className="underline underline-offset-4">
             {email}
           </a>
-        ) : (
-          <Placeholder inline>email address</Placeholder>
-        )}
-      </Row>
-      <Row label="Hours">
-        {hours ?? <Placeholder inline>business hours</Placeholder>}
-      </Row>
-      <Row label="Social">
-        {socials.length > 0 ? (
+        </Row>
+      )}
+      {hours && <Row label="Hours">{hours}</Row>}
+      {socials.length > 0 && (
+        <Row label="Social">
           <SocialLinks />
-        ) : (
-          <Placeholder inline>social media links</Placeholder>
-        )}
-      </Row>
+        </Row>
+      )}
     </dl>
   );
 }

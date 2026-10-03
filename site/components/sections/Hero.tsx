@@ -12,16 +12,17 @@ export function Hero() {
             Spray Tan By Jenna
           </p>
           <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
-            Spray tanning in Easton, MA
+            Mobile spray tans in Los Angeles
           </h1>
+          {/* Jenna's own words. */}
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-            Book a studio appointment with Jenna, or have her come to you with
-            a mobile house-call appointment.
+            Los Angeles, I am here! From the East Coast to the West Coast, I am
+            now offering mobile spray tans in the LA area.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <BookNowButton size="lg" />
             <ButtonLink href="/services" variant="secondary" size="lg">
-              View services
+              See what&apos;s included
             </ButtonLink>
           </div>
         </div>

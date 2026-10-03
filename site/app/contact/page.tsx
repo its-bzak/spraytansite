@@ -9,7 +9,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 export const metadata: Metadata = buildMetadata({
   title: "Contact",
   description:
-    "Contact Spray Tan By Jenna: studio location in Easton, MA, mobile appointments, and how to book online.",
+    "Contact Spray Tan By Jenna: mobile spray tans in the Los Angeles area, Instagram, and how to book an appointment online.",
   path: "/contact",
 });
 
@@ -25,7 +25,7 @@ export default function ContactPage() {
       </PageHero>
 
       <Section labelledBy="details-heading">
-        <SectionHeading id="details-heading" title="Location and contact details" />
+        <SectionHeading id="details-heading" title="Contact details" />
         <div className="mt-8 max-w-3xl">
           <ContactDetails />
         </div>

@@ -7,6 +7,7 @@ import {
   siteConfig,
 } from "../config/site";
 import { services } from "../content/services";
+import { videoContent } from "../content/video";
 
 const routes = [...navLinks, ...secondaryLinks].map((link) => link.href);
 const viewports = [375, 768, 1024, 1440].map((width) => ({
@@ -40,6 +41,9 @@ for (const viewport of viewports) {
 
         // Heading hierarchy: exactly one h1.
         await expect(page.locator("h1")).toHaveCount(1);
+
+        // Missing content is left out, never shown as a placeholder.
+        await expect(page.getByText(/placeholder/i)).toHaveCount(0);
 
         // Accessibility (WCAG 2.x A/AA).
         const results = await new AxeBuilder({ page })
@@ -162,9 +166,11 @@ test.describe("mobile menu", () => {
 
 test.describe("paid video", () => {
   // The suite runs without Stripe/Cloudflare/Resend keys.
-  test("without configuration, /video shows no player", async ({ page }) => {
+  test("without configuration, /video shows the coming-soon notice and no player", async ({
+    page,
+  }) => {
     await page.goto("/video");
-    await expect(page.getByText(/isn.t set up yet/)).toBeVisible();
+    await expect(page.getByText(videoContent.comingSoon)).toBeVisible();
     await expect(page.locator("iframe")).toHaveCount(0);
   });
 

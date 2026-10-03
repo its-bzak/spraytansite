@@ -55,6 +55,27 @@ export function ButtonLink({
   );
 }
 
+/** Button-styled link to another site, opened in a new tab. */
+export function ExternalButtonLink({
+  href,
+  variant,
+  size,
+  className,
+  children,
+}: ButtonProps & { href: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={buttonStyles(variant, size, className)}
+    >
+      {children}
+      <span className="sr-only"> (opens in a new tab)</span>
+    </a>
+  );
+}
+
 /**
  * The only component that links to the booking provider. Every "Book Now"
  * on the site renders through here. `href` defaults to the full service list
@@ -69,14 +90,13 @@ export function BookNowButton({
   children = "Book Now",
 }: Partial<ButtonProps> & { href?: string }) {
   return (
-    <a
+    <ExternalButtonLink
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={buttonStyles(variant, size, className)}
+      variant={variant}
+      size={size}
+      className={className}
     >
       {children}
-      <span className="sr-only"> (opens in a new tab)</span>
-    </a>
+    </ExternalButtonLink>
   );
 }

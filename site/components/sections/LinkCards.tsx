@@ -5,19 +5,19 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 
 const cards = [
   {
-    href: "/portfolio",
-    title: "Portfolio",
-    text: "Browse photos of Jenna's work.",
+    href: "/training",
+    title: "Training",
+    text: "Hands-on spray tan training and consulting for beauty businesses and anyone starting their own.",
+  },
+  {
+    href: "/video",
+    title: "At-home kit",
+    text: "Coming soon: a personalized kit with a video tutorial on how to spray tan yourself.",
   },
   {
     href: "/faq",
     title: "FAQ",
-    text: "Find answers about appointments.",
-  },
-  {
-    href: "/training",
-    title: "Training",
-    text: "Learn about Jenna's training program.",
+    text: "Answers about appointments, rinse times and aftercare products.",
   },
 ] as const;
 

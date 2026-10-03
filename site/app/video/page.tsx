@@ -6,19 +6,17 @@ import { buildMetadata } from "@/lib/metadata";
 import { signedStreamEmbedUrl } from "@/lib/stream";
 import { getVideoPrice } from "@/lib/stripe";
 import { hasVideoAccess } from "@/lib/video-access";
+import { KitComingSoon } from "@/components/sections/KitComingSoon";
 import { PageHero } from "@/components/sections/PageHero";
 import { VideoPaywall } from "@/components/sections/VideoPaywall";
 import { VideoPlayer } from "@/components/sections/VideoPlayer";
-import { Placeholder } from "@/components/ui/Placeholder";
 import { Section } from "@/components/ui/Section";
 
-const title = videoContent.title ?? "Video";
+const { title, description } = videoContent;
 
 export const metadata: Metadata = buildMetadata({
-  title,
-  description:
-    videoContent.description ??
-    "Buy lifetime access to Jenna's video from Spray Tan By Jenna, then watch any time on any device.",
+  title: "At-Home Spray Tan Kit",
+  description,
   path: "/video",
 });
 
@@ -29,24 +27,17 @@ function noticeFrom(params: { sent?: string | string[]; error?: string | string[
   return null;
 }
 
+/** The at-home kit and its video tutorial: coming soon until checkout is set up. */
 export default async function VideoPage({ searchParams }: PageProps<"/video">) {
   // Env vars are read at request time: never prerender this page, or a build
-  // made without keys would be stuck showing the "not set up" state.
+  // made without keys would be stuck showing the coming-soon state.
   await connection();
   const config = getVideoConfig();
   const unlocked = config ? await hasVideoAccess(config) : false;
 
   let content;
   if (!config) {
-    content = (
-      <Placeholder>
-        <p>
-          The paid video isn&apos;t set up yet. It needs Stripe, Cloudflare
-          Stream and Resend accounts plus the video itself. See
-          CONTENT-CHECKLIST.md.
-        </p>
-      </Placeholder>
-    );
+    content = <KitComingSoon />;
   } else if (unlocked) {
     content = (
       <VideoPlayer src={signedStreamEmbedUrl(config)} title={title} />
@@ -61,13 +52,9 @@ export default async function VideoPage({ searchParams }: PageProps<"/video">) {
   return (
     <>
       <PageHero
-        eyebrow={unlocked ? "Your video" : "Video"}
+        eyebrow={unlocked ? "Your video" : config ? "At-home kit" : "Coming soon"}
         title={title}
-        lead={
-          videoContent.description ?? (
-            <Placeholder inline>video description</Placeholder>
-          )
-        }
+        lead={description}
       />
       <Section>{content}</Section>
     </>

@@ -1,17 +1,16 @@
 import Link from "next/link";
 import {
-  formatAddress,
   navLinks,
   secondaryLinks,
+  serviceAreaLabel,
   siteConfig,
 } from "@/config/site";
 import { BookNowButton } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { Placeholder } from "@/components/ui/Placeholder";
 import { SocialLinks } from "@/components/sections/SocialLinks";
 
 export function Footer() {
-  const { name, address, phone, email } = siteConfig;
+  const { name, phone, email } = siteConfig;
 
   return (
     <footer
@@ -50,10 +49,10 @@ export function Footer() {
 
           <div>
             <h2 className="text-sm font-semibold tracking-widest uppercase">
-              Visit &amp; contact
+              Contact
             </h2>
             <address className="mt-4 space-y-2 text-zinc-300 not-italic">
-              <p>{formatAddress(address)}</p>
+              <p>Serving {serviceAreaLabel}</p>
               {phone && (
                 <p>
                   <a href={`tel:${phone}`} className="hover:text-paper">
@@ -69,15 +68,6 @@ export function Footer() {
                 </p>
               )}
             </address>
-            {(!phone || !email) && (
-              <p className="mt-2">
-                <Placeholder inline>
-                  {[!phone && "phone", !email && "email"]
-                    .filter(Boolean)
-                    .join(" & ")}
-                </Placeholder>
-              </p>
-            )}
             <SocialLinks className="mt-4" />
           </div>
         </div>

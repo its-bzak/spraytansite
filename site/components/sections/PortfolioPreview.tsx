@@ -5,12 +5,16 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 /** Home page teaser: the featured portfolio photos, linking to /portfolio. */
-export function PortfolioPreview() {
+export function PortfolioPreview({
+  tone = "default",
+}: {
+  tone?: "default" | "soft";
+}) {
   const featured = portfolioItems.filter((item) => item.featured);
   if (featured.length === 0) return null;
 
   return (
-    <Section labelledBy="work-heading">
+    <Section tone={tone} labelledBy="work-heading">
       <SectionHeading
         id="work-heading"
         eyebrow="Portfolio"

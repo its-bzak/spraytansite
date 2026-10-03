@@ -18,7 +18,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `${siteConfig.name} | Spray Tanning in Easton, MA`,
+    default: `${siteConfig.name} | Mobile Spray Tans in Los Angeles`,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,

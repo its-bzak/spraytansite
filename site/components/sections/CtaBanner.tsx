@@ -4,7 +4,7 @@ import { Section } from "@/components/ui/Section";
 /** Closing conversion block. Used at the end of every page. */
 export function CtaBanner({
   title = "Ready to book?",
-  description = "Choose a studio or mobile appointment and pick a time that works for you.",
+  description = "Book a mobile spray tan and pick a time that works for you.",
 }: {
   title?: string;
   description?: string;

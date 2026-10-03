@@ -12,7 +12,7 @@ export async function sendAccessEmail(
   to: string,
   accessUrl: string,
 ) {
-  const title = videoContent.title ?? "your video";
+  const { title } = videoContent;
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {

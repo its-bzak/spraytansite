@@ -42,7 +42,7 @@ export default function OpenGraphImage() {
             {siteConfig.name}
           </div>
           <div style={{ marginTop: 28, fontSize: 36 }}>
-            Studio and mobile spray tanning in Easton, MA
+            {siteConfig.tagline}
           </div>
         </div>
         <div style={{ width: PHOTO_WIDTH, height: "100%", display: "flex", overflow: "hidden" }}>

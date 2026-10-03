@@ -1,16 +1,14 @@
 /**
  * Single source of truth for business details.
  *
- * NEEDS_CONFIRMATION: values marked below were taken from Jenna's existing
- * GlossGenius site and have NOT yet been confirmed by the client.
- * `null` means the client has not supplied the information yet.
+ * NEEDS_CONFIRMATION: values marked below have NOT yet been confirmed by the
+ * client. `null` means she has not supplied the information yet; the site
+ * leaves it out until she does (see CONTENT-CHECKLIST.md).
  */
 
-export type Address = {
-  street: string;
+export type ServiceArea = {
   city: string;
   region: string;
-  postalCode: string;
   country: string;
 };
 
@@ -23,8 +21,8 @@ export type SiteConfig = {
   /** Production origin. Set NEXT_PUBLIC_SITE_URL once the domain is known. */
   url: string;
   bookingUrl: string;
-  address: Address;
-  serviceArea: string | null;
+  /** Mobile appointments only, so no street address is published. */
+  serviceArea: ServiceArea;
   phone: string | null;
   email: string | null;
   hours: string | null;
@@ -35,26 +33,29 @@ export type SiteConfig = {
 
 export const siteConfig: SiteConfig = {
   name: "Spray Tan By Jenna",
-  tagline: "Studio and mobile spray tanning in Easton, MA",
+  tagline: "Mobile spray tanning in Los Angeles",
   description:
-    "Spray tan appointments with Jenna, at her studio in Easton, MA or at your home. View services and book online.",
+    "Mobile spray tans in the Los Angeles area. Jenna comes to you with a custom formula and full-body application. View services and book online.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000", // NEEDS_CONFIRMATION: domain
   bookingUrl: "https://jennacrossley.glossgenius.com/services", // NEEDS_CONFIRMATION: approved booking URL
-  address: {
-    // NEEDS_CONFIRMATION: studio address (and whether it may be shown publicly)
-    street: "3 Roosevelt Cir",
-    city: "Easton",
-    region: "MA",
-    postalCode: "02375",
-    country: "US",
-  },
-  serviceArea: null, // MISSING: towns/regions covered by mobile appointments
+  serviceArea: { city: "Los Angeles", region: "CA", country: "US" },
   phone: null, // MISSING
   email: null, // MISSING
   hours: null, // MISSING
-  socials: [], // MISSING: platform handles/URLs
+  socials: [
+    // NEEDS_CONFIRMATION: handle from Jenna's email; check it opens her profile
+    { label: "Instagram", href: "https://www.instagram.com/spraytanbyjenna/" },
+  ],
   googleReviewsUrl: null, // MISSING: Google Business Profile reviews link
 };
+
+/** For use mid-sentence: "Mobile spray tans in the Los Angeles area". */
+export const serviceAreaLabel = `the ${siteConfig.serviceArea.city} area`;
+
+/** Her Instagram profile, which the at-home kit's coming-soon notice points to. */
+export const instagram = siteConfig.socials.find(
+  ({ label }) => label === "Instagram",
+);
 
 export const navLinks = [
   { label: "Home", href: "/" },
@@ -66,23 +67,15 @@ export const navLinks = [
   { label: "Training", href: "/training" },
 ] as const;
 
-/** Footer-only links; kept out of the main nav, which is full at 1024px. */
+/**
+ * Footer-only links; kept out of the main nav, which is full at 1024px.
+ * Terms and Privacy come back here once Jenna supplies their text.
+ */
 export const secondaryLinks = [
-  { label: "Video", href: "/video" },
-  { label: "Terms", href: "/terms" },
-  { label: "Privacy", href: "/privacy" },
+  { label: "At-home kit", href: "/video" },
 ] as const;
-
-export function formatAddress({ street, city, region, postalCode }: Address) {
-  return `${street}, ${city}, ${region} ${postalCode}`;
-}
 
 /** Booking link that opens GlossGenius with one service already selected. */
 export function serviceBookingUrl(token: string) {
   return `${siteConfig.bookingUrl}?service_token=${encodeURIComponent(token)}`;
-}
-
-export function directionsUrl(address: Address) {
-  const query = encodeURIComponent(formatAddress(address));
-  return `https://www.google.com/maps/search/?api=1&query=${query}`;
 }

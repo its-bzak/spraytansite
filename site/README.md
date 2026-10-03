@@ -18,9 +18,9 @@ npm run check:booking  # compare content/services.ts with the live GlossGenius m
 
 | What | Where |
 |---|---|
-| Business details: name, booking URL, address, phone, email, hours, socials, nav | `config/site.ts` |
-| Services, FAQ, portfolio, reviews, video text | `content/*.ts` |
-| Paid video (Stripe, Cloudflare Stream, Resend) | `lib/`, `app/video/`, `app/api/stripe/webhook/` |
+| Business details: name, booking URL, service area, phone, email, hours, socials, nav | `config/site.ts` |
+| Services (with what's included, formulas, retail products), FAQ, portfolio, reviews, at-home kit text | `content/*.ts` |
+| At-home kit page and paid video (Stripe, Cloudflare Stream, Resend) | `lib/`, `app/video/`, `app/api/stripe/webhook/` |
 | Pages | `app/<route>/page.tsx` |
 | Shared UI (buttons, sections, placeholders) | `components/ui/` |
 | Header, footer, mobile nav, sticky Book Now bar | `components/layout/` |
@@ -31,16 +31,33 @@ npm run check:booking  # compare content/services.ts with the live GlossGenius m
 Rules:
 - **Book Now:** always render `BookNowButton`. It's the only component that links to GlossGenius, so the URL lives in one place. By default it opens the full service list. Service cards pass `href={serviceBookingUrl(token)}`, which opens GlossGenius with that service already selected. The token is each service's `bookingToken` in `content/services.ts`.
 - **GlossGenius drift:** `npm run check:booking` fetches her live GlossGenius menu and fails if a booking token is stale or a name, price or duration differs from `content/services.ts`. It needs network access, so it isn't part of the e2e suite. Run it before deploying and after she edits her menu.
-- **Missing content:** use `Placeholder` / `ImageFrame` (without `src`). Never write stand-in copy. The full list of what's still missing is in `../CONTENT-CHECKLIST.md`.
+- **Missing content:** leave it out. Components render nothing until their content exists (Reviews, contact rows, socials), and the e2e suite fails if a linked page shows a placeholder. Never write stand-in copy. List what's missing in `../CONTENT-CHECKLIST.md`. `Placeholder` is used only by the unlinked, unindexed Terms and Privacy pages.
 
 ## Environment
 
 All variables are documented in `.env.example`. Copy it to `.env.local` for development.
 
-- `NEXT_PUBLIC_SITE_URL`: the production origin, e.g. `https://example.com`. It is **required for production**. Canonical URLs, Open Graph, the sitemap, robots, JSON-LD, Stripe redirects and emailed links fall back to `http://localhost:3000` without it.
-- **Paid video variables:** until *all* of them are set, `/video` shows a "not set up yet" notice. The build and tests need none of them.
+- `NEXT_PUBLIC_SITE_URL`: the production origin, e.g. `https://example.com`. It is **required for production**, and Vercel production builds fail without it (`next.config.ts`). Canonical URLs, Open Graph, the sitemap, robots, JSON-LD, Stripe redirects and emailed links fall back to `http://localhost:3000` without it.
+- **Paid video variables:** until *all* of them are set, `/video` shows the at-home kit's "coming soon" notice. The build and tests need none of them.
+
+## Deploying (Vercel)
+
+1. Import the GitHub repo and set **Root Directory** to `site`. Next.js is detected automatically.
+2. Set `NEXT_PUBLIC_SITE_URL` for Production. The paid video variables can wait until the kit launches.
+3. Add the domain in Vercel and point its DNS there.
+4. Before each deploy, run `npm run check:booking`. After deploying, check `/robots.txt`, `/sitemap.xml` and a social preview of the home page.
+
+## Adding photos
+
+Keep the full-size originals in `../client-originals/` (git ignores it). Put web copies in `public/`, with:
+- the long edge at most 2400px, JPEG at about quality 80
+- metadata stripped. This matters because phone photos can carry GPS location. `sharp` drops it by default.
+- descriptive kebab-case file names, like the existing ones
+- alt text describing only what's visible, with no outcome claims
 
 ## Paid video
+
+`/video` is the at-home spray tan kit page. Until checkout is configured it shows Jenna's "coming soon" note. Today's checkout sells access to the video only; selling the physical kit will need shipping-address collection and personalization (see `../CONTENT-CHECKLIST.md`).
 
 How it works:
 - There is no database; Stripe is the record of who paid.

@@ -8,7 +8,7 @@ import { Section } from "@/components/ui/Section";
 export const metadata: Metadata = buildMetadata({
   title: "Portfolio",
   description:
-    "Photos of spray tans by Jenna, serving Easton, MA and nearby with studio and mobile appointments.",
+    "Photos of spray tans by Jenna for weddings, proms, events and everyday. Now offering mobile spray tans in Los Angeles.",
   path: "/portfolio",
 });
 
