@@ -39,11 +39,10 @@ export const siteConfig: SiteConfig = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000", // NEEDS_CONFIRMATION: domain
   bookingUrl: "https://jennacrossley.glossgenius.com/services", // NEEDS_CONFIRMATION: approved booking URL
   serviceArea: { city: "Los Angeles", region: "CA", country: "US" },
-  phone: null, // MISSING
-  email: null, // MISSING
+  phone: "(774)-300-7147",
+  email: "jenna@spraytanbyjenna.com",
   hours: null, // MISSING
   socials: [
-    // NEEDS_CONFIRMATION: handle from Jenna's email; check it opens her profile
     { label: "Instagram", href: "https://www.instagram.com/spraytanbyjenna/" },
   ],
   googleReviewsUrl: null, // MISSING: Google Business Profile reviews link
